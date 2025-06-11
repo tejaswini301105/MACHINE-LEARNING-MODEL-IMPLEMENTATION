@@ -1,9 +1,6 @@
 # Spam Email Detection using Naive Bayes Classifier
 
----
-
 ## 🧪 Step 1: Import Libraries
-```python
 import pandas as pd
 import random
 from sklearn.model_selection import train_test_split
@@ -14,12 +11,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 ```
 
----
-
 ## 📄 Step 2: Generate a Synthetic Dataset (30,000 messages)
 We create 15,000 spam and 15,000 ham messages using simple templates.
 
-```python
 spam_templates = [
     "Congratulations! You've won a {amount} gift card. Click here to claim.",
     "Urgent! Your account has been suspended. Verify now.",
@@ -64,34 +58,29 @@ random.shuffle(all_messages)
 
 # Create DataFrame
 df = pd.DataFrame(all_messages)
-```
 
----
+
 
 ## 🏷 Step 3: Encode Labels
 We map "ham" to 0 and "spam" to 1.
 
 ```python
 df['label'] = df['label'].map({'ham': 0, 'spam': 1})
-```
 
----
 
 ## 🔀 Step 4: Split Dataset
 We split 80% for training and 20% for testing.
 
-```python
+
 X_train, X_test, y_train, y_test = train_test_split(
     df['message'], df['label'], test_size=0.2, random_state=42
 )
-```
 
----
 
 ## 🧠 Step 5: Vectorize Text (TF-IDF)
 Convert the raw text messages into numerical features.
 
-```python
+
 vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)
 X_train_tf = vectorizer.fit_transform(X_train)
 X_test_tf = vectorizer.transform(X_test)
@@ -105,14 +94,13 @@ We use the Multinomial Naive Bayes algorithm for classification.
 ```python
 model = MultinomialNB()
 model.fit(X_train_tf, y_train)
-```
 
 ---
 
 ## 📊 Step 7: Evaluate the Model
 Check accuracy and other performance metrics.
 
-```python
+
 y_pred = model.predict(X_test_tf)
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
 print("Accuracy:", accuracy_score(y_test, y_pred))
@@ -123,7 +111,7 @@ print("Accuracy:", accuracy_score(y_test, y_pred))
 ## 📉 Step 8: Visualize Confusion Matrix
 Shows how well the model is classifying messages.
 
-```python
+
 cm = confusion_matrix(y_test, y_pred)
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["Ham", "Spam"], yticklabels=["Ham", "Spam"])
 plt.xlabel("Predicted")
